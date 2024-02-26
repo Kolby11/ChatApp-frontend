@@ -1,0 +1,12 @@
+{
+	"recommendations": [
+		"formulahendry.auto-rename-tag",
+		"steoates.autoimport",
+		"oderwat.indent-rainbow",
+		"yzhang.markdown-all-in-one",
+		"bradlc.vscode-tailwindcss",
+		"pkief.material-icon-theme",
+		"vincaslt.highlight-matching-tag",
+		"dsznajder.es7-react-js-snippets"
+	]
+}

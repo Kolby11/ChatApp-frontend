@@ -1,0 +1,15 @@
+{
+	"tabWidth": 2,
+	"printWidth": 120,
+	"singleQuote": true,
+	"trailingComma": "es5",
+	"semi": false,
+	"parser": "typescript",
+	"arrowParens": "avoid",
+	"pluginSearchDirs": false,
+	"plugins": [
+		"prettier-plugin-organize-attributes",
+		"prettier-plugin-organize-imports",
+		"prettier-plugin-tailwindcss"
+	]
+}

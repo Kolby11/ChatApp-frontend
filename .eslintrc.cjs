@@ -9,7 +9,7 @@ module.exports = {
       'plugin:prettier/recommended',
     ],
     parser: '@typescript-eslint/parser',
-    plugins: ['@typescript-eslint', 'eslint-comments', 'promise', 'import', 'prettier'],
+    plugins: ['@typescript-eslint','import', 'prettier','react-refresh'],
     rules: {
       'prettier/prettier': ['error', { endOfLine: 'auto' }],
       'import/order': [

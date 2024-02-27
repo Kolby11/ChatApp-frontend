@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-	content: ['./src/**/*.{html,ts}'],
-	theme: {
-		extend: {},
-	},
-	plugins: [],
+module.exports = {
+  darkMode: ['class'],
+  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+  prefix: '',
+  theme: {},
+  plugins: [],
 }

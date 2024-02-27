@@ -26,7 +26,7 @@ export function Register() {
   }
 
   return (
-    <div className="flex h-full flex-col items-center justify-center rounded-lg border border-gray-700 bg-slate-900 bg-opacity-80  px-16 py-20">
+    <div className="flex h-full flex-col items-center justify-center px-16 py-20">
       <h1 className="text mb-10 text-3xl font-bold">Register</h1>
       <form className="flex w-72 flex-col gap-1" onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="username" className='label'>Username</label>

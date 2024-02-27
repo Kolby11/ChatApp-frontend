@@ -5,6 +5,6 @@ type Props = {
 
 export function FormInput(props: Props) {
   return (
-    <input className="input" {...props.inputProps} type={props.type} />
+    <input className="input-secondary input" {...props.inputProps} type={props.type} />
   )
 }

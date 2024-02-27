@@ -5,6 +5,6 @@ type Props = {
 
 export function FormInput(props: Props) {
   return (
-    <input className=" rounded-md border border-slate-600 bg-transparent" {...props.inputProps} type={props.type} />
+    <input className="input" {...props.inputProps} type={props.type} />
   )
 }

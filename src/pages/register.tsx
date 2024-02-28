@@ -9,7 +9,7 @@ export function Register() {
     username: string
     email: string
     password: string
-    confirmPassword: string
+    passwordConfirm: string
   }
   const { register, handleSubmit } = useForm<RegisterValues>()
 
@@ -35,8 +35,8 @@ export function Register() {
         <FormInput inputProps={register('email')} type="email" />
         <label htmlFor="password" className='label'>Password</label>
         <FormInput inputProps={register('password')} type="password" />
-        <label htmlFor="confirmPassword" className='label'>Confirm Password</label>
-        <FormInput inputProps={register('confirmPassword')} type="password" />
+        <label htmlFor="passwordConfirm" className='label'>Confirm Password</label>
+        <FormInput inputProps={register('passwordConfirm')} type="password" />
         <input
           type="submit"
           className="btn mt-10"

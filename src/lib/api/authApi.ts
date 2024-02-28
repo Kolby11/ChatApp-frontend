@@ -6,7 +6,7 @@ export namespace AuthApi {
     username: string
     email: string
     password: string
-    confirmPassword: string
+    passwordConfirm: string
   }
 
   export async function register(params: RegisterParams) {

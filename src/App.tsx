@@ -1,12 +1,11 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
+import Navbar from './components/Navbar'
 import { Login } from './pages/login'
 import { Register } from './pages/register'
-import Navbar from './components/Navbar'
-
 
 function App() {
   return (
-    <main className='App'>
+    <main className="App">
       <Navbar />
       <Routes>
         <Route path="register" element={<Register />} />

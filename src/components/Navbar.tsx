@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { themeChange } from 'theme-change'
-
 
 const themes = [
   'light',
@@ -43,17 +42,21 @@ function Navbar() {
     themeChange(false)
   }, [])
   return (
-    <nav className="justify-between h-16 navbar bg-primary">
-      <select data-choose-theme className=' select'>
-        {themes.map((theme) => {
-          return (<option value={theme}>{theme.slice(0, 1).toUpperCase() + theme.slice(1)}</option>)
+    <nav className="navbar h-16 justify-between bg-primary">
+      <select data-choose-theme className=" select">
+        {themes.map(theme => {
+          return <option value={theme}>{theme.slice(0, 1).toUpperCase() + theme.slice(1)}</option>
         })}
       </select>
-      <div className='flex justify-center items-center space-x-4'>
-        <Link to="/login" className="link btn btm-nav-sm">Login</Link>
-        <Link to="/register" className="link btn btm-nav-sm">Register</Link>
+      <div className="flex items-center justify-center space-x-4">
+        <Link to="/login" className="btn link btm-nav-sm">
+          Login
+        </Link>
+        <Link to="/register" className="btn link btm-nav-sm">
+          Register
+        </Link>
       </div>
-    </nav >
+    </nav>
   )
 }
 

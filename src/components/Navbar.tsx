@@ -42,7 +42,7 @@ function Navbar() {
     themeChange(false)
   }, [])
   return (
-    <nav className="navbar h-16 justify-between bg-primary">
+    <nav className="navbar absolute h-16 justify-between bg-primary">
       <select data-choose-theme className=" select">
         {themes.map(theme => {
           return <option value={theme}>{theme.slice(0, 1).toUpperCase() + theme.slice(1)}</option>

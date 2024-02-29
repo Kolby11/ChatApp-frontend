@@ -6,10 +6,14 @@ export const API_ENDPOINTS = {
     login: `${BASE_API_URL}/auth/login`,
     logout: `${BASE_API_URL}/auth/logout`,
   },
-  groupchat: {
-    create: `${BASE_API_URL}/groupchat/create`,
-    get: `${BASE_API_URL}/groupchat/get`,
-    join: `${BASE_API_URL}/groupchat/join`,
-    leave: `${BASE_API_URL}/groupchat/leave`,
+  chat: {
+    myChats: `${BASE_API_URL}/chat/myChats`,
+    detail: `${BASE_API_URL}/chat`,
+    create: `${BASE_API_URL}/chat`,
+    leave: `${BASE_API_URL}/chat/leave`,
+  },
+  user: {
+    all: `${BASE_API_URL}/user`,
+    current: `${BASE_API_URL}/user/currentUser`,
   },
 }

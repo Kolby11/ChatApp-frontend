@@ -1,43 +1,22 @@
 import ChatDetail from '@/components/ChatDetail';
 import CreateChatModal from '@/components/CreateChatModal';
+import { useSocket } from '@/contexts/SocketContext';
 import { ChatApi } from '@/lib/api/chatApi';
-
 import React, { useState, useEffect } from 'react';
-import io, { Socket } from 'socket.io-client';
-
-
 
 function Home() {
+  const socket = useSocket();
   const [myChats, setMyChats] = useState<{}[]>([]);
   const [openedChat, setOpenedChat] = useState<string>('');
-  const [socket, setSocket] = useState<Socket | undefined>(undefined);
-
-
-  const handleConnect = () => {
-    const newSocket = io('http://localhost:3000');
-    setSocket(newSocket);
-    console.log('Connected to socket!');
-  };
-
-  const handleDisconnect = () => {
-    if (socket) {
-      socket.disconnect();
-      setSocket(undefined);
-      console.log('Disconnected from socket!');
-    }
-  };
 
   const handleOpenChat = (id: string) => {
     setOpenedChat(id);
   }
 
-  const handleStartCall = (e: React.MouseEvent) => {
+  const handleStartCall = (e: React.MouseEvent, chatId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    if (socket) {
-      socket.emit('start-call', 'test');
-      console.log('Started a call!');
-    }
+    socket.socket?.emit('start_call', { chatId });
   };
 
   const fetchMyChats = async () => {
@@ -51,19 +30,14 @@ function Home() {
   // Clean up the socket connection when the component unmounts
   useEffect(() => {
     fetchMyChats()
-    return () => {
-      if (socket) {
-        socket.disconnect();
-      }
-    };
-  }, [socket]);
+  }, []);
 
   return (
     <div className='flex justify-center items-center h-full'>
       <div className='w-1/4 bg-black h-full flex flex-col px-4 py-2'>
         {myChats.map((chat, index) => {
           return (
-            <button key={index} className={`text-white h-14 flex justify-between items-center px-4 py-2 ${openedChat === chat ? 'bg-secondary' : 'bg-black'}`} onClick={() => handleOpenChat(chat._id)}>{chat.name} <button onClick={e => handleStartCall(e)} className=''>
+            <button key={index} className={`text-white h-14 flex justify-between items-center px-4 py-2 ${openedChat === chat ? 'bg-secondary' : 'bg-black'}`} onClick={() => handleOpenChat(chat._id)}>{chat.name} <button onClick={e => handleStartCall(e, chat._id)} className=''>
               <span className="material-symbols-outlined">
                 call
               </span>

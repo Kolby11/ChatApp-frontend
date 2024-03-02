@@ -1,28 +1,33 @@
 import { FormInput } from '@/components/ui/FormInput'
 import { AuthContext } from '@/contexts/AuthContext'
+import { useSetUser } from '@/contexts/UserContext'
 import { AuthApi } from '@/lib/api/authApi'
+import { UserApi } from '@/lib/api/userApi'
 import { AxiosError } from 'axios'
 import { useContext, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
 export function Login() {
+  const setUser = useSetUser()
   const navigate = useNavigate()
   type LoginValues = {
     usernameOrEmail: string
     password: string
   }
 
-  const { isAuth, login } = useContext(AuthContext)
+  const { accessToken, login } = useContext(AuthContext)
 
   const { register, handleSubmit } = useForm<LoginValues>()
   const onSubmit: SubmitHandler<LoginValues> = async data => {
     try {
       const response = await AuthApi.login(data)
-      console.log(response)
       if (response.status === 200) {
-        login()
-        navigate('../homepage')
+        const userResponse = await UserApi.getCurrentUser()
+        setUser(userResponse.data)
+
+        login(response.data.accessToken)
+        navigate('/')
       }
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -30,12 +35,6 @@ export function Login() {
       }
     }
   }
-
-  useEffect(() => {
-    if (isAuth) {
-      navigate('../')
-    }
-  }, [isAuth, navigate])
 
   return (
     <div className="flex h-full flex-col items-center justify-center px-16 py-20 text-primary-content">

@@ -20,13 +20,29 @@ type ProviderProps = {
   children: React.ReactNode;
 };
 
+type SendMessageProps = {
+  message: string;
+  chatId: string;
+};
+
+export const useSocketSendMessage = () => {
+  const { socket } = useSocket();
+
+  return (props: SendMessageProps) => {
+    if (socket) {
+      socket.emit('messageSend', JSON.stringify(props));
+    }
+  };
+
+}
+
 export function SocketContextProvider({ children }: ProviderProps) {
   const accessToken = useAuth().accessToken
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const connectSocket = () => {
     if (!accessToken) return;
-    const newSocket = io('http://localhost:3000', { auth: { token: accessToken } }); // Replace with your server URL
+    const newSocket = io('http://localhost:3000', { extraHeaders: { authorization: accessToken } }); // Replace with your server URL
     setSocket(newSocket);
   };
 

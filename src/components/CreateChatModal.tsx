@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { UserApi } from '@/lib/api/userApi';
 import { Types } from '@/lib/types';
 import { ChatApi } from '@/lib/api/chatApi';
+import { useUser } from '@/contexts/UserContext';
 
 function CreateChatModal() {
+  const user = useUser();
   const [chatName, setChatName] = useState<string>('');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [allUsers, setAllUsers] = useState<Types.UserPublic[]>([]);
@@ -25,9 +27,8 @@ function CreateChatModal() {
   const fetchAllUsers = async () => {
     const response = await UserApi.getAllUsers();
     if (response.status === 200) {
-      const data = response.data;
-      console.log(data);
-      setAllUsers(data);
+      const data: Types.UserPublic[] = response.data;
+      setAllUsers(data.filter((u: Types.UserPublic) => u._id !== user?._id));
     }
   }
 
@@ -38,7 +39,7 @@ function CreateChatModal() {
 
   useEffect(() => {
     fetchAllUsers();
-  }, [])
+  }, [user])
 
   return (
     <dialog id="create_chat_modal" className="modal">
@@ -54,7 +55,7 @@ function CreateChatModal() {
                   <span className="material-symbols-outlined">
                     {selectedUsers.includes(user._id) ? 'radio_button_checked' : 'radio_button_unchecked'}
                   </span>
-                  {user.email}
+                  {user.username}
                 </button>
               </li>;
             })}

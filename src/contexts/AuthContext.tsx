@@ -17,6 +17,7 @@ export const AuthContext = createContext<AuthContextType>({
 type ProviderProps = {
   children: ReactNode
 }
+
 export const useAuth = () => useContext(AuthContext)
 
 export function AuthContextProvider({ children }: ProviderProps) {

@@ -1,39 +1,60 @@
+import { useSocketSendMessage } from '@/contexts/SocketContext'
 import { ChatApi } from '@/lib/api/chatApi'
-import React, { useEffect, useState } from 'react'
+import { Types } from '@/lib/types'
+import { useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { FormInput } from './ui/FormInput'
+import { useUser } from '@/contexts/UserContext'
 
 type Props = {
   chatId: string
 }
+
 function ChatDetail(props: Props) {
+  const user = useUser()
+  const sendMessage = useSocketSendMessage()
   const { chatId } = props
 
-  let [chatDetails, setChatDetails] = useState<any>({})
+  let [chatDetails, setChatDetails] = useState<Types.ChatDetail | null>(null)
+
+  type SendMessageValues = {
+    message: string
+  }
+
+  const { register, handleSubmit } = useForm<SendMessageValues>()
+
+  const onSubmit: SubmitHandler<SendMessageValues> = async data => {
+    sendMessage({ message: data.message, chatId })
+  }
+
+  async function fetchChatDetail() {
+    if (!chatId) return
+    const response = await ChatApi.getChatDetail(chatId)
+    setChatDetails(response.data)
+  }
 
   useEffect(() => {
-    async function fetchChatDetail() {
-      const response = await ChatApi.getChatDetail(chatId)
-      setChatDetails(response.data)
-    }
     fetchChatDetail()
 
-  }, [])
-  console.log(chatId)
-  const messages = [{ message: "Hello", sender: "user" }, { message: "Hi", sender: "bot" }, { message: "How are you?", sender: "user" }, { message: "I'm good, thanks", sender: "bot" }]
+  }, [props, user])
   return (
     <div className='w-full h-full flex flex-col px-4 py-4'>
       <div className='grow overflow-auto p-2 border-2 border-neutral rounded-xl'>
-        {messages.map((message, index) => {
+        {chatDetails?.messages?.map((message, index) => {
           return (
-            <div key={index} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'} mb-2`}>
-              <div className={`px-4 py-2 rounded-lg ${message.sender === 'user' ? 'bg-primary' : 'bg-secondary'} text-white`}>
-                {message.message}
+            <div key={index} className={`flex ${message.user._id === user?._id ? 'justify-end' : 'justify-start'} mb-2`}>
+              <div className={`flex-col ${message.user._id === user?._id ? 'items-end' : 'items-start'}`}>
+                <div className={`px-4 py-2 rounded-lg ${message.user._id === user?._id ? 'bg-primary' : 'bg-secondary'} text-white`}>
+                  {message.message}
+                </div>
+                <p className=' text-xs'>{message.user.username}</p>
               </div>
             </div>
           )
         })}
       </div>
-      <form className='flex space-x-1 justify-center items-center mt-2'>
-        <input type="text" className="input bg-secondary text-secondary-content w-full" />
+      <form className='flex space-x-1 justify-center items-center mt-2' onSubmit={handleSubmit(onSubmit)}>
+        <FormInput inputProps={register('message')} type="text" />
         <input type="submit" value="Send" className="btn h-14 bg-primary text-primary-content" />
       </form>
     </div>

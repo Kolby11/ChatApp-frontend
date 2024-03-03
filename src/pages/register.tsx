@@ -16,11 +16,10 @@ export function Register() {
   const onSubmit: SubmitHandler<RegisterValues> = async data => {
     try {
       const response = await AuthApi.register(data)
-      console.log(response)
     }
     catch (err) {
       if (err instanceof AxiosError) {
-        console.log(err.response?.data.message.fieldErrors)
+        console.error(err.response?.data.message.fieldErrors)
       }
     }
   }

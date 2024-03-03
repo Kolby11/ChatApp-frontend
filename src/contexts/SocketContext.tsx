@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Socket, io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
+import { useAddChatNotifications } from './ChatsContext';
 
 type SocketContextType = {
   socket: Socket | null;
@@ -38,12 +39,18 @@ export const useSocketSendMessage = () => {
 
 export function SocketContextProvider({ children }: ProviderProps) {
   const accessToken = useAuth().accessToken
+  const updateNotifications = useAddChatNotifications();
   const [socket, setSocket] = useState<Socket | null>(null);
 
   const connectSocket = () => {
     if (!accessToken) return;
-    const newSocket = io('http://localhost:3000', { extraHeaders: { authorization: accessToken } }); // Replace with your server URL
+    const newSocket = io('http://localhost:3000', { extraHeaders: { authorization: accessToken } });
     setSocket(newSocket);
+
+    newSocket.on('messageReceived', (data) => {
+      data = JSON.parse(data);
+      updateNotifications(data._id);
+    });
   };
 
   const disconnectSocket = () => {
@@ -56,7 +63,14 @@ export function SocketContextProvider({ children }: ProviderProps) {
   // Automatically connect the socket when the provider is mounted
   useEffect(() => {
     connectSocket();
-  }, []);
+
+    return () => {
+      if (socket) {
+        socket.off('messageReceived');
+        socket.disconnect();
+      }
+    };
+  }, [accessToken]);
 
   return (
     <SocketContext.Provider value={{ socket, connectSocket, disconnectSocket }}>

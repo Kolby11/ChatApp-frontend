@@ -26,18 +26,18 @@ type ProviderProps = {
 };
 
 export function UserContextProvider({ children }: ProviderProps) {
-  const accessToken = useAuth();
+  const auth = useAuth();
   const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async () => {
-    if (!accessToken) return;
+    if (!auth.accessToken) return;
     const userResponse = await UserApi.getCurrentUser();
     setUser(userResponse.data);
   }
 
   useEffect(() => {
     fetchUser();
-  }, [accessToken]);
+  }, [auth]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

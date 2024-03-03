@@ -34,7 +34,6 @@ function CreateChatModal() {
 
   const handleCreateChat = async () => {
     const response = await ChatApi.createChat({ name: chatName, userIds: selectedUsers });
-    console.log(response);
   }
 
   useEffect(() => {

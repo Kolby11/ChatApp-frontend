@@ -2,6 +2,7 @@ const BASE_API_URL = 'http://localhost:3000/api/v1'
 
 export const API_ENDPOINTS = {
   auth: {
+    refresh: `${BASE_API_URL}/auth/refresh`,
     register: `${BASE_API_URL}/auth/register`,
     login: `${BASE_API_URL}/auth/login`,
     logout: `${BASE_API_URL}/auth/logout`,

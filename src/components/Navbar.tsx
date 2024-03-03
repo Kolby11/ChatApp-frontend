@@ -1,6 +1,7 @@
+import { useAuth } from '@/contexts/AuthContext'
 import { useUser } from '@/contexts/UserContext'
 import { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, redirect } from 'react-router-dom'
 import { themeChange } from 'theme-change'
 
 const themes = [
@@ -40,9 +41,19 @@ const themes = [
 
 function Navbar() {
   const user = useUser()
+  const { accessToken, logout } = useAuth()
+
+  const handleLogout = async () => {
+    const loggedOut = await logout()
+    if (loggedOut) {
+      redirect('/login')
+    }
+  }
+
   useEffect(() => {
     themeChange(false)
   }, [])
+
   return (
     <nav className="navbar absolute h-16 justify-between bg-primary">
       <select data-choose-theme className=" select">
@@ -51,13 +62,23 @@ function Navbar() {
         })}
       </select>
       <div className="flex items-center justify-center space-x-4">
-        <p>{user?.username}</p>
-        <Link to="/login" className="btn link btm-nav-sm">
-          Login
-        </Link>
-        <Link to="/register" className="btn link btm-nav-sm">
-          Register
-        </Link>
+        {accessToken ? (
+          <>
+            <p>{user?.username}</p>
+            <Link to="/Home" className="btn link btm-nav-sm">Home</Link>
+            <button className="btn link btm-nav-sm" onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="btn link btm-nav-sm">
+              Login
+            </Link>
+            <Link to="/register" className="btn link btm-nav-sm">
+              Register
+            </Link>
+          </>
+        )}
+
       </div>
     </nav>
   )

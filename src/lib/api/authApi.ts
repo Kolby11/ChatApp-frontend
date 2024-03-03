@@ -25,4 +25,8 @@ export namespace AuthApi {
   export async function logout() {
     return await axios.get(API_ENDPOINTS.auth.logout, { withCredentials: true })
   }
+
+  export async function refresh() {
+    return await axios.get(API_ENDPOINTS.auth.refresh, { withCredentials: true })
+  }
 }

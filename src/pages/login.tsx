@@ -27,7 +27,7 @@ export function Login() {
       }
     } catch (err) {
       if (err instanceof AxiosError) {
-        console.log(err.response?.data.message.fieldErrors)
+        console.error(err.response?.data.message.fieldErrors)
       }
     }
   }

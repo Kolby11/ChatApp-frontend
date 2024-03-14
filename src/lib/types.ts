@@ -20,7 +20,7 @@ export namespace Types {
   }
 
   export type Message = {
-    _id: string
+    _id?: string
     user: {
       _id: string
       username: string

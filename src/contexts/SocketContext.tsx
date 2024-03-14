@@ -49,6 +49,7 @@ export function SocketContextProvider({ children }: ProviderProps) {
 
     newSocket.on('messageReceived', (data) => {
       data = JSON.parse(data);
+      console.log('messageReceived', data);
       updateNotifications(data._id);
     });
   };

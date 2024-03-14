@@ -25,15 +25,17 @@ function Home() {
 
   return (
     <div className='flex justify-center items-center h-full'>
-      <div className='w-1/4 bg-black h-full flex flex-col px-4 py-2'>
-        {myChats.map((chat, index) => (
-          <ChatPreview
-            key={index}
-            chat={chat}
-            openedChat={openedChat}
-            setOpenedChat={setOpenedChat}
-          />
-        ))}
+      <div className='w-1/4 bg-black h-full px-4 py-2 flex flex-col'>
+        <div className="space-y-2 h-fit">
+          {myChats.map((chat, index) => (
+            <ChatPreview
+              key={index}
+              chat={chat}
+              openedChat={openedChat}
+              setOpenedChat={setOpenedChat}
+            />
+          ))}
+        </div>
         <button className="btn mt-auto" onClick={() => document.getElementById('create_chat_modal').showModal()}>Start new chat</button>
         <CreateChatModal />
       </div>

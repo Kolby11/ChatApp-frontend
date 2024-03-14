@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { FormInput } from './ui/FormInput'
 import { useUser } from '@/contexts/UserContext'
+import { useNotification, useResetNotifications } from '@/contexts/ChatsContext'
 
 type Props = {
   chatId: string
@@ -13,6 +14,7 @@ type Props = {
 function ChatDetail(props: Props) {
   const user = useUser()
   const sendMessage = useSocketSendMessage()
+  const chatNotifications = useNotification();
   const { chatId } = props
 
   let [chatDetails, setChatDetails] = useState<Types.ChatDetail | null>(null)
@@ -25,6 +27,23 @@ function ChatDetail(props: Props) {
 
   const onSubmit: SubmitHandler<SendMessageValues> = async data => {
     sendMessage({ message: data.message, chatId })
+
+    // On submit add message to chatDetails only in memory -- can be unreliable
+    if (user && chatDetails) {
+      setChatDetails({
+        ...chatDetails,
+        messages: [
+          ...chatDetails.messages,
+          {
+            message: data.message,
+            user: {
+              _id: user?._id,
+              username: user?.username
+            }
+          }
+        ]
+      })
+    }
   }
 
   async function fetchChatDetail() {
@@ -37,6 +56,17 @@ function ChatDetail(props: Props) {
     fetchChatDetail()
 
   }, [props, user])
+
+  const resetNotifications = useResetNotifications();
+
+
+  useEffect(() => {
+    if (chatNotifications.find(cn => cn._id === chatId)?.notifications) {
+      fetchChatDetail();
+      resetNotifications(chatId);
+    }
+  }, [chatNotifications]);
+
   return (
     <div className='w-full h-full flex flex-col px-4 py-4'>
       <div className='grow overflow-auto p-2 border-2 border-neutral rounded-xl'>

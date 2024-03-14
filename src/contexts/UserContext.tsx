@@ -33,11 +33,12 @@ export function UserContextProvider({ children }: ProviderProps) {
     if (!auth.accessToken) return;
     const userResponse = await UserApi.getCurrentUser();
     setUser(userResponse.data);
+    console.log(userResponse.data);
   }
 
   useEffect(() => {
     fetchUser();
-  }, [auth]);
+  }, [auth.accessToken]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
